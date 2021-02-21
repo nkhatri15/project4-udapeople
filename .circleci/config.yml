@@ -12,8 +12,9 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
-            npm i             
-            sudo npm run build            
+            sudo npm install webpack-dev-server -g
+            sudo npm install
+            sudo npm run build    
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -57,7 +58,32 @@ jobs:
           command: |
             cd backend
             npm run test      
-
+  scan-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: ["frontend-build"]  
+      - run:
+          name: Font-end security scan
+          command: |
+            cd frontend
+            npm audit --audit-level=critical
+     
+  scan-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: ["backend-build"] 
+      - run:
+          name: Back-end security scan
+          command: |
+            cd backend
+            npm audit --audit-level=critical
+  
 workflows:
   welcome:
     jobs:
@@ -67,3 +93,7 @@ workflows:
           requires: [build-frontend]
       - test-backend:
           requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]      
