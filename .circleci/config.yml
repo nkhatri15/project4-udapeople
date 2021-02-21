@@ -15,7 +15,9 @@ jobs:
             npm install         
             npm run build    
       - save_cache:
-          paths: [frontend/node_modules]
+          paths: 
+            - frontend/node_modules
+            - frontend/dist
           key: frontendCache
   # build-backend:
   #   docker:
@@ -43,6 +45,7 @@ jobs:
       - run:
           name: Font-end test
           command: |
+            ls frontend/
             cd frontend
             npm run test
   # test-backend:
