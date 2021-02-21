@@ -21,22 +21,27 @@ jobs:
             - frontend/node_modules
             - frontend/dist
           key: frontend-build-${CIRCLE_WORKFLOW_ID}
-  # build-backend:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys: [backend-cache]
-  #     - run:
-  #         name: Back-end build
-  #         command: |
-  #           cd backend
-  #           npm i
-  #           npm run build
-  #     - save_cache:
-  #         paths: [backend/node_modules11]
-  #         key: backend-cache   
+  build-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - frontend-build-${CIRCLE_WORKFLOW_ID}
+      - run:
+          name: Back-end build
+          command: |
+            cd backend
+            rm -rf node_modules/
+            npm i
+            npm run build
+      - save_cache:
+          paths: 
+            - backend/node_modules
+            - backend/dist
+          key: backend-build-${CIRCLE_WORKFLOW_ID}
+
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -49,54 +54,56 @@ jobs:
           command: |            
             cd frontend
             npm run test
-  # test-backend:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys: ["backend-cache"] 
-  #     - run:
-  #         name: Back-end test
-  #         command: |
-  #           cd backend
-  #           npm run test      
-  # scan-frontend:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys: ["frontend-build"]  
-  #     - run:
-  #         name: Font-end security scan
-  #         command: |
-  #           cd frontend
-  #           npm audit --audit-level=critical
+  test-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: backend-build-${CIRCLE_WORKFLOW_ID}
+      - run:
+          name: Back-end test
+          command: |
+            cd backend
+            npm run test      
+  scan-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: frontend-build-${CIRCLE_WORKFLOW_ID}
+      - run:
+          name: Font-end security scan
+          command: |
+            cd frontend
+            npm update
+            npm audit fix --audit-level=critical --force
      
-  # scan-backend:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - checkout
-  #     - restore_cache:
-  #         keys: ["backend-build"] 
-  #     - run:
-  #         name: Back-end security scan
-  #         command: |
-  #           cd backend
-  #           npm audit --audit-level=critical
+  scan-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: backend-build-${CIRCLE_WORKFLOW_ID}
+      - run:
+          name: Back-end security scan
+          command: |
+            cd backend
+            npm update
+            npm audit fix --audit-level=critical --force
   
 workflows:
   welcome:
     jobs:
       - build-frontend
-      #- build-backend 
+      - build-backend 
       - test-frontend:
           requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - scan-backend:
-      #     requires: [build-backend]      
+      - test-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - scan-backend:
+          requires: [build-backend]      
