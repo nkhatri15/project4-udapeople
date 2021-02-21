@@ -1,9 +1,24 @@
 version: 2.1
 
-orbs:
-  welcome: circleci/welcome-orb@0.4.1
+jobs:
+  build-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Build front-end
+          command: |
+            cd frontend
+            npm i             
+            sudo npm run build            
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
 
 workflows:
   welcome:
     jobs:
-      - welcome/run
+      - build-frontend     
