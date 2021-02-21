@@ -12,11 +12,11 @@ jobs:
           name: Build front-end
           command: |
             cd frontend           
-            sudo npm install
+            npm install
             npm install oauth-signature
-            sudo npm run build    
+            npm run build    
       - save_cache:
-          paths: [frontend/node_modules]
+          paths: [frontend/node_modules1]
           key: frontend-build
   build-backend:
     docker:
@@ -32,7 +32,7 @@ jobs:
             npm i
             npm run build
       - save_cache:
-          paths: [backend/node_modules]
+          paths: [backend/node_modules1]
           key: backend-build   
   test-frontend:
     docker:
