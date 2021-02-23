@@ -10,7 +10,7 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name "n-udacity-backend-${CIRCLE_WORKFLOW_ID}" 
-            aws cloudformation delete-stack --stack-name "n-udacity-frontend-${CIRCLE_WORKFLOW_ID}" s          
+            aws cloudformation delete-stack --stack-name "n-udacity-frontend-${CIRCLE_WORKFLOW_ID}"           
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -136,8 +136,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags project=n-udapeople\
               --stack-name n-udacity-backend-${CIRCLE_WORKFLOW_ID} \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
-              --region=us-west-2             
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}                          
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -145,13 +144,13 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --tags project=n-udapeople \
               --stack-name n-udacity-frontend-${CIRCLE_WORKFLOW_ID} \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
-              --region=us-west-2
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}              
       - run:
           name: Add back-end ip to ansible inventory
           command: |
             aws ec2 describe-instances \
               --filters 'Name=tag:project,Values=n-udapeople' \
+              --region us-east-2 \
               --query "Reservations[*].Instances[*].PublicIpAddress" \
               --output text >> .circleci/ansible/inventory.txt          
             cat .circleci/ansible/inventory.txt
