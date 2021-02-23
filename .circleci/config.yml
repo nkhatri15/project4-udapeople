@@ -9,8 +9,8 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name "n-udacity-backend-${CIRCLE_WORKFLOW_ID}" --region=us-west-2
-            aws cloudformation delete-stack --stack-name "n-udacity-frontend-${CIRCLE_WORKFLOW_ID}" --region=us-west-2            
+            aws cloudformation delete-stack --stack-name "n-udacity-backend-${CIRCLE_WORKFLOW_ID}" 
+            aws cloudformation delete-stack --stack-name "n-udacity-frontend-${CIRCLE_WORKFLOW_ID}" s          
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -136,7 +136,8 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags project=n-udapeople\
               --stack-name n-udacity-backend-${CIRCLE_WORKFLOW_ID} \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}             
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
+              --region=us-west-2             
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -145,6 +146,7 @@ jobs:
               --tags project=n-udapeople \
               --stack-name n-udacity-frontend-${CIRCLE_WORKFLOW_ID} \
               --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
+              --region=us-west-2
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -163,15 +165,15 @@ jobs:
 workflows:
   welcome:
     jobs:
-      - build-frontend
-      - build-backend 
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
-      - scan-backend:
-          requires: [build-backend]
+      # - build-frontend
+      # - build-backend 
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      # - scan-backend:
+      #     requires: [build-backend]
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          #requires: [test-frontend, test-backend, scan-frontend, scan-backend]
