@@ -126,9 +126,10 @@ jobs:
             npm audit fix --audit-level=critical --force
   deploy-infrastructure:
     docker:
-      - image: cimg/base:2020.01
+      - image: amazon/aws-cli
     steps:
-      - checkout     
+      - checkout
+      - run: yum -y install tar gzip
       - run:
           name: Ensure back-end infrastructure exists
           command: |
