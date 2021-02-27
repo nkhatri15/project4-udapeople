@@ -387,10 +387,14 @@ jobs:
 
   cleanup:
     docker:
-      - image: cimg/base:2020.01
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - aws-cli/setup
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       apk add --update py3-pip && pip3 install --upgrade pip && pip3 install awscli
+      #       apk add --update curl
       - run:
           name: Remove old stacks and files
           command: |
