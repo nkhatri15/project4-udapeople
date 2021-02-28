@@ -380,7 +380,7 @@ jobs:
             then              
               aws s3 rb s3://udapeople-hgktuekkflsdfsre --force              
               aws cloudformation delete-stack --stack-name "n-udacity-backend-${OldWorkflowID}" --region us-west-2"              
-              aws cloudformation delete-stack --stack-name "n-udacity-frontend-${OldWorkflowID}" --region us-west-2
+              aws cloudformation delete-stack --stack-name "n-udacity-frontend-${OldWorkflowID}" --region us-west-2"
             fi
       - destroy-environment  
       - revert-migrations
