@@ -271,7 +271,7 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
-            aws s3 cp --recursive frontend/dist "s3://nikitaudapeople"
+            aws s3 cp --recursive frontend/dist "s3://udapeople-hgktuekkflsdfsre"
       - revert-migrations
       - destroy-environment
 
@@ -337,7 +337,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://nikitaudapeople.s3-us-west-2.amazonaws.com" 
+            URL="http://udapeople-hgktuekkflsdfsre.s3-us-west-2.amazonaws.com" 
             echo $URL
             if curl -s ${URL} | grep "Welcome"
             then
@@ -373,7 +373,7 @@ jobs:
             echo Delete old stacks/resources
             if [[ "${STACKS[@]}" =~ "${OldWorkflowId}" ]]
             then              
-              aws s3 rb s3://nikitaudapeople --force              
+              aws s3 rb s3://udapeople-hgktuekkflsdfsre --force              
               aws cloudformation delete-stack --stack-name "n-udacity-backend-${OldWorkflowID}" --region us-west-2"              
               aws cloudformation delete-stack --stack-name "n-udacity-frontend-${OldWorkflowID}" --region us-west-2
             fi
