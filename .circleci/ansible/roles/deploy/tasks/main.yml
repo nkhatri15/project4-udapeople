@@ -19,12 +19,15 @@
   shell: |
     cd /home/ubuntu/
     tar xzvf backend.tar.gz
-    
+
 - name: make sure the latest npm is installed
   become: true
-  command: npm install -g npm
+  command: npm install -g npm@latest
 
-- name: "NPM install"
+- name: make sure webpack is installed
+  become: true
+  command: npm install -g webpack-dev-server
+
   # become: true
   command: npm install
   args:
