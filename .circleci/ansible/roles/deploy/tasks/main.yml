@@ -17,9 +17,13 @@
 - name: "copy backend file"
   become: true
   copy:
-    src: /home/circleci/project/backend
-    dest: /root
+    src: /home/backend.tar.gz
+    dest: /root/backend.tar.gz
     force: no
+- name: extract files
+  shell: |
+    cd /root/
+    tar xzvf backend.tar.gz
 - name: "install npm packages"
   become: true
   command: npm install
