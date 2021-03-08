@@ -12,9 +12,14 @@
 - name: "Get project/backend files from circleci server to local"
   become: true
   copy:
-    src: ~/project/backend/
-    dest: /home/ubuntu
+    src: /home/backend.tar.gz
+    dest: /home/ubuntu/backend.tar.gz
 
+- name: extract files
+  shell: |
+    cd /home/ubuntu/
+    tar xzvf backend.tar.gz
+    
 - name: make sure the latest npm is installed
   become: true
   command: npm install -g npm
