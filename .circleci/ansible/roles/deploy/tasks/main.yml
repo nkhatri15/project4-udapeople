@@ -1,29 +1,9 @@
-- name: "upgrade packages."
-  become: true
-  apt:
-    upgrade: "yes"
-- name: "install dependencies."
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
-    update_cache: yes
-- name: "install pm2"
-  become: true
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
 - name: "copy backend file"
   become: true
   copy:
-    src: /home/backend.tar.gz
-    dest: /root/backend.tar.gz
+    src: /home/backend
+    dest: /root
     force: no
-- name: extract files
-  shell: |
-    cd /root/
-    tar xzvf backend.tar.gz
 - name: "install npm packages"
   become: true
   command: npm install
