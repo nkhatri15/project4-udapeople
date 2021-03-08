@@ -1,21 +1,44 @@
-- name: Copy backend files
+- name: "upgrade packages."
+  become: true
+  apt:
+    upgrade: "yes"
+
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    update_cache: yes
+
+- name: "Get project/backend files from circleci server to local"
   become: true
   copy:
-    src: /home/backend.tar.gz
-    dest: /home/ubuntu/backend.tar.gz
+    src: ~/project/backend/
+    dest: /home/ubuntu
 
-- name: Start PM2
-  shell: |
-    cd /home/ubuntu/
-    tar xzvf backend.tar.gz    
-    cd backend
-    npm install -g npm@latest
-    npm install -g webpack-dev-server
-    npm install
-    npm run build
-
-- name: "start server"
+- name: make sure the latest npm is installed
   become: true
-  command: pm2 start npm -- run start
+  command: npm install -g npm
+
+- name: "NPM install"
+  # become: true
+  command: npm install
   args:
-    chdir: /home/ubuntu/backend/dist
+    chdir: /home/ubuntu
+
+- name: "NPM Run Build"
+  # become: true
+  command: npm run build
+  args:
+    chdir: /home/ubuntu
+
+- name: "LS to verify the dist"
+  become: true
+  command: ls
+  args:
+    chdir: /home/ubuntu
+
+- name: "PM2 to run back-end server"
+  become: true
+  command: pm2 start npm -- run "start"
+  args:
+    chdir: /home/ubuntu
