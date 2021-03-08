@@ -1,0 +1,27 @@
+1. github project 
+
+https://github.com/nkhatri15/project4-udapeople
+circle ci : https://app.circleci.com/pipelines/github/nkhatri15/project4-udapeople
+
+2. url of s3 bucket : 
+
+http://udapeople-145f9de8-f7c0-41cd-beec-268785bdc78e.s3-us-west-2.amazonaws.com 
+
+
+3. Provide the public URL for your CloudFront distribution (aka, your production front-end). 
+http://udapeople-145f9de8-f7c0-41cd-beec-268785bdc78e.s3-website-us-west-2.amazonaws.com/#/employees
+
+
+4. Provide a public URL to your Prometheus Server. 
+http://34.209.143.110:9090/targets
+
+
+
+
+
+
+
+
+
+
+

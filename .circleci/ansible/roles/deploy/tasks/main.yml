@@ -17,7 +17,7 @@
 - name: "copy backend file"
   become: true
   copy:
-    src: home/circleci/project/backend         
+    src: /home/circleci/project/backend
     dest: /root
     force: no
 - name: "install npm packages"
