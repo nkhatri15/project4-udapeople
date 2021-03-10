@@ -21,6 +21,7 @@
     dest: /root/backend.tar.gz
 
 - name: extract files
+  become: true
   shell: |
     cd /root/
     tar xzvf backend.tar.gz
