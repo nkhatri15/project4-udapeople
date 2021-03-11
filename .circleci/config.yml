@@ -295,11 +295,11 @@ jobs:
             apk add curl
       - restore_cache:
           keys: backend-build-${CIRCLE_WORKFLOW_ID}
-      - run:
-          name: Deploy backend
-          command: |
-            cd /home
-            tar czf backend.tar.gz -P /home/circleci/project/backend/dist
+      # - run:
+      #     name: Deploy backend
+      #     command: |
+      #       cd /home
+      #       tar czf backend.tar.gz -P /home/circleci/project/backend/dist
       - run:
           name: Deploy backend 2
           command: |
