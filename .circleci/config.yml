@@ -63,7 +63,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - frontend-build-${CIRCLE_WORKFLOW_ID}
+            - backend-build-${CIRCLE_WORKFLOW_ID}
       - run:
           name: Back-end build
           command: |
