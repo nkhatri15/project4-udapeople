@@ -60,7 +60,7 @@
 - name: "extract  backend"
   become_user: true
   unarchive:
-    src: /etc/artifact.tar.gz
+    src: /etc/backend.tar.gz
     dest: ~/udapeople/
 
 - name: "install npm to  backend"
