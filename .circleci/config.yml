@@ -293,6 +293,8 @@ jobs:
           command: |
             apk add --update ansible openssh-client tar gzip
             apk add curl
+            sudo npm install webpack-dev-server -g
+            sudo npm install 
       - restore_cache:
           keys: backend-build-${CIRCLE_WORKFLOW_ID}
       - run:
@@ -310,8 +312,8 @@ jobs:
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
             cd backend
-            npm i
-            npm run build
+            sudo npm i
+            sudo npm run build
             tar -czvf /etc/backend.tar.gz ./
             chmod 644 /etc/backend.tar.gz            
             
