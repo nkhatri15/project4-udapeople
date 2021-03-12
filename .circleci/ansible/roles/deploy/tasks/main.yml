@@ -52,19 +52,18 @@
 #     chdir: /root/backend/dist
 
 - name: "Create directory"
-  become_user: true
+  become: true
   file:
     path: ~/udapeople/
     state: directory
 
 - name: "extract  backend"
-  become_user: true
+  become: true
   unarchive:
     src: /etc/backend.tar.gz
     dest: ~/udapeople/
 
-- name: "install npm to  backend"
-  become_user: true
+- name: "install npm to  backend" 
   become: true
   command: npm install
   args:
@@ -72,7 +71,7 @@
    
 
 - name: "run  backend"
-  become_user: true
+  become: true
   command: pm2 start npm -- run start
   args:
     chdir: ~/udapeople/
