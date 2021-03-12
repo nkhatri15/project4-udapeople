@@ -22,31 +22,58 @@
 #     dest: /root/
 #     force: no
 
-- name: Copy backend files
-  become: true
-  copy:
-    src: /etc/backend.tar.gz
-    dest: /root/backend.tar.gz
-
-- name: extract files
-  become: true
-  shell: |    
-    tar xzvf backend.tar.gz --directory /root/    
-
-- name: "install npm packages"
-  become: true
-  command: npm install
-  args:
-    chdir: /root/backend
-
-# - name: "compile npm packages"
+# - name: Copy backend files
 #   become: true
-#   command: npm run build
+#   copy:
+#     src: /etc/backend.tar.gz
+#     dest: /root/backend.tar.gz
+
+# - name: extract files
+#   become: true
+#   shell: |    
+#     tar xzvf backend.tar.gz --directory /root/    
+
+# - name: "install npm packages"
+#   become: true
+#   command: npm install
 #   args:
 #     chdir: /root/backend
 
-- name: "start server"
+# # - name: "compile npm packages"
+# #   become: true
+# #   command: npm run build
+# #   args:
+# #     chdir: /root/backend
+
+# - name: "start server"
+#   become: true
+#   command: pm2 start npm -- run start
+#   args:
+#     chdir: /root/backend/dist
+
+- name: "Create directory"
+  become_user: true
+  file:
+    path: ~/udapeople/
+    state: directory
+
+- name: "extract  backend"
+  become_user: true
+  unarchive:
+    src: /etc/artifact.tar.gz
+    dest: ~/udapeople/
+
+- name: "install npm to  backend"
+  become_user: true
   become: true
+  command: npm install
+  args:
+    chdir: ~/udapeople/
+   
+
+- name: "run  backend"
+  become_user: true
   command: pm2 start npm -- run start
   args:
-    chdir: /root/backend/dist
+    chdir: ~/udapeople/
+   
