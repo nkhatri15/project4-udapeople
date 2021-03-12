@@ -28,11 +28,11 @@
     src: /etc/backend.tar.gz
     dest: /root/backend.tar.gz
 
-# - name: extract files
-#   become: true
-#   shell: |
-#     cd /root/
-#     tar xzvf backend.tar.gz    
+- name: extract files
+  become: true
+  shell: |
+    cd /root/
+    tar xzvf backend.tar.gz    
  
 
 - name: "install npm packages"
