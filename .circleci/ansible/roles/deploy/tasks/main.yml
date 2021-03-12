@@ -30,10 +30,8 @@
 
 - name: extract files
   become: true
-  shell: |
-    cd /root/
-    tar xzvf backend.tar.gz    
- 
+  shell: |    
+    tar xzvf backend.tar.gz --directory /root/    
 
 - name: "install npm packages"
   become: true
