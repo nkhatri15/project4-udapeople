@@ -15,24 +15,25 @@
     production: yes
     state: present
 
-- name: "copy backend file"
-  become: true
-  copy:
-    src: /home/circleci/project/backend
-    dest: /root
-    force: no
-
-# - name: Copy backend files
+# - name: "copy backend file"
 #   become: true
 #   copy:
-#     src: /home/backend.tar.gz
-#     dest: /root/backend.tar.gz
+#     src: /home/circleci/project/backend
+#     dest: /root/
+#     force: no
+
+- name: Copy backend files
+  become: true
+  copy:
+    src: /etc/backend.tar.gz
+    dest: /root/backend.tar.gz
 
 # - name: extract files
 #   become: true
 #   shell: |
 #     cd /root/
 #     tar xzvf backend.tar.gz    
+ 
 
 - name: "install npm packages"
   become: true
@@ -40,11 +41,11 @@
   args:
     chdir: /root/backend
 
-- name: "compile npm packages"
-  become: true
-  command: npm run build
-  args:
-    chdir: /root/backend
+# - name: "compile npm packages"
+#   become: true
+#   command: npm run build
+#   args:
+#     chdir: /root/backend
 
 - name: "start server"
   become: true
